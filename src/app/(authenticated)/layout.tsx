@@ -9,7 +9,7 @@ export default function AuthenticatedLayout({
     <div vaul-drawer-wrapper="">
       <div className="relative flex min-h-screen flex-col bg-background">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 mt-4">{children}</main>
       </div>
     </div>
   );

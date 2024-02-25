@@ -1,3 +1,4 @@
+import LogoutButton from './logout-button';
 import { MainNav } from './main-nav';
 import { ModeToggle } from './ui/mode-toggle';
 
@@ -10,6 +11,9 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <nav className="flex items-center">
             <ModeToggle />
+            <div className="ml-2">
+              <LogoutButton />
+            </div>
           </nav>
         </div>
       </div>
