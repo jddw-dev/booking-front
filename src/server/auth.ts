@@ -7,10 +7,19 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, account, profile }) {
+    async jwt({ token, user, account }) {
       if (account && account.type === 'credentials') {
-        token.userId = account.providerAccountId;
+        if (user) {
+          token = {
+            ...token,
+            // @ts-ignore
+            accessToken: user.accessToken,
+            // @ts-ignore
+            refreshToken: user.refreshToken,
+          };
+        }
       }
+
       return token;
     },
 
@@ -35,12 +44,20 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+        const res = await fetch('http://localhost:3000/v1/auth/signin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials),
+        });
 
-        return { id: 'test' };
+        if (res.ok) {
+          const user = res.json();
+          if (user) {
+            return user;
+          }
+        }
+
+        return null;
       },
     }),
   ],
