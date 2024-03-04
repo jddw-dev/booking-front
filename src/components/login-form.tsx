@@ -3,7 +3,6 @@
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-dropdown-menu';
-import { signIn } from 'next-auth/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -34,14 +33,12 @@ export default function LoginForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const onSubmit = async (values: LoginInput) => {
-    console.log('onSubmit');
     setIsLoading(true);
-    await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      callbackUrl: '/',
-    });
-    console.log('after await');
+    // await signIn('credentials', {
+    //   email: values.email,
+    //   password: values.password,
+    //   callbackUrl: '/',
+    // });
     setIsLoading(false);
   };
 
