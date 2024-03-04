@@ -1,6 +1,6 @@
-import { SignIn } from '@clerk/nextjs';
+import { SignUp } from '@clerk/nextjs';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -43,7 +43,7 @@ export default function LoginPage() {
             </div> */}
 
             {/* <LoginForm /> */}
-            <SignIn />
+            <SignUp />
           </div>
         </div>
       </div>

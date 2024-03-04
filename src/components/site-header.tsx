@@ -1,4 +1,4 @@
-import LogoutButton from './logout-button';
+import { UserButton } from '@clerk/nextjs';
 import { MainNav } from './main-nav';
 import { ModeToggle } from './ui/mode-toggle';
 
@@ -12,7 +12,8 @@ export function SiteHeader() {
           <nav className="flex items-center">
             <ModeToggle />
             <div className="ml-2">
-              <LogoutButton />
+              {/* <LogoutButton /> */}
+              <UserButton />
             </div>
           </nav>
         </div>
