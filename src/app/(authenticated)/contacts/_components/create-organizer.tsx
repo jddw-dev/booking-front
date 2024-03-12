@@ -19,6 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { useAuth } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMediaQuery } from '@uidotdev/usehooks';
 import { useState } from 'react';
@@ -48,6 +49,9 @@ export default function CreateOrganizer() {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
+  // const fetch = useFetch();
+  const { getToken } = useAuth();
+
   const methods = useForm<CreateOrganizerInput>({
     resolver: zodResolver(CreateOrganizerSchema),
     defaultValues: {
@@ -55,7 +59,25 @@ export default function CreateOrganizer() {
     },
   });
   const onSubmit = async (values: CreateOrganizerInput) => {
-    console.log('onSubmit', values);
+    const fetchOptions = {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await getToken()}`,
+      },
+    };
+
+    const apiResponse = await fetch(
+      'http://localhost:3000/v1/organizers',
+      fetchOptions
+    );
+    if (!apiResponse.ok) {
+      console.error('Error creating organizer', apiResponse);
+    } else {
+      const { id: organizerId } = await apiResponse.json();
+      console.log('Organizer created', organizerId);
+    }
   };
 
   if (isDesktop) {
