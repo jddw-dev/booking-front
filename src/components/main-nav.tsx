@@ -11,6 +11,16 @@ export function MainNav() {
       <Link href="/" className="mr-6 flex items-center space-x-2">
         <span className="hidden font-bold sm:inline-block">JDDW Booking</span>
       </Link>
+
+      <Link href="/contacts" className="mr-6 flex items-center space-x-2">
+        <span
+          className={`${
+            pathname === '/contacts' ? 'text-primary' : 'text-muted-foreground'
+          }`}
+        >
+          Contacts
+        </span>
+      </Link>
     </div>
   );
 }
