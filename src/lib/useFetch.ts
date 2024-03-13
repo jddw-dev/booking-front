@@ -3,11 +3,18 @@ import { useAuth } from '@clerk/nextjs';
 export default function useFetch() {
   const { getToken } = useAuth();
 
-  const authenticatedFetch = async (...args: any[]) => {
-    // @ts-ignore
-    return fetch(...args, {
-      headers: { Authorization: `Bearer ${await getToken()}` },
-    }).then((res) => res.json());
+  const authenticatedFetch = async (
+    input: string,
+    init?: RequestInit | undefined
+  ) => {
+    return fetch(input, {
+      ...init,
+      headers: {
+        ...init?.headers,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await getToken()}`,
+      },
+    });
   };
 
   return authenticatedFetch;

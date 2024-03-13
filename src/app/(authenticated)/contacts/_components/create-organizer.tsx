@@ -19,7 +19,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { useAuth } from '@clerk/nextjs';
+import { backendRoutes } from '@/config/backend-routes';
+import useFetch from '@/lib/useFetch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMediaQuery } from '@uidotdev/usehooks';
 import { useState } from 'react';
@@ -49,8 +50,7 @@ export default function CreateOrganizer() {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  // const fetch = useFetch();
-  const { getToken } = useAuth();
+  const fetch = useFetch();
 
   const methods = useForm<CreateOrganizerInput>({
     resolver: zodResolver(CreateOrganizerSchema),
@@ -62,16 +62,9 @@ export default function CreateOrganizer() {
     const fetchOptions = {
       method: 'POST',
       body: JSON.stringify(values),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await getToken()}`,
-      },
     };
 
-    const apiResponse = await fetch(
-      'http://localhost:3000/v1/organizers',
-      fetchOptions
-    );
+    const apiResponse = await fetch(backendRoutes.organizers, fetchOptions);
     if (!apiResponse.ok) {
       console.error('Error creating organizer', apiResponse);
     } else {
