@@ -23,6 +23,7 @@ import { backendRoutes } from '@/config/backend-routes';
 import useFetch from '@/lib/useFetch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMediaQuery } from '@uidotdev/usehooks';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import CreateOrganizerForm, {
@@ -50,6 +51,8 @@ export default function CreateOrganizer() {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
+  const router = useRouter();
+
   const fetch = useFetch();
 
   const methods = useForm<CreateOrganizerInput>({
@@ -69,7 +72,7 @@ export default function CreateOrganizer() {
       console.error('Error creating organizer', apiResponse);
     } else {
       const { id: organizerId } = await apiResponse.json();
-      console.log('Organizer created', organizerId);
+      router.push(`/contacts/organizers/${organizerId}`);
     }
   };
 

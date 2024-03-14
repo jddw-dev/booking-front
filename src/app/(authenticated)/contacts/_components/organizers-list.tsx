@@ -1,11 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -19,8 +17,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import Link from 'next/link';
 import { useState } from 'react';
-import { Organizer } from '../_types/organizer';
+import { Organizer, TranslatedOrganizerType } from '../_types/organizer';
 
 export interface OrganizersListProps {
   organizers: Organizer[];
@@ -35,7 +34,7 @@ export default function OrganizersList({ organizers }: OrganizersListProps) {
 
   return (
     <>
-      <div className="mb-2 flex items-center space-x-2">
+      <div className="mb-4 flex items-center space-x-2">
         <Switch
           id="table-view"
           onClick={handleTableView}
@@ -45,22 +44,33 @@ export default function OrganizersList({ organizers }: OrganizersListProps) {
       </div>
 
       {!isTableView && (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {organizers.map((organizer) => (
-            <Card key={organizer.id}>
-              <CardHeader>
-                <CardTitle>{organizer.name}</CardTitle>
-                <CardDescription>-type-</CardDescription>
-              </CardHeader>
+            <Link
+              key={organizer.id}
+              href={`/contacts/organizers/${organizer.id}`}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-center">
+                    {organizer.name}
+                  </CardTitle>
+                  <CardDescription>
+                    {TranslatedOrganizerType[organizer.type]}
+                  </CardDescription>
+                </CardHeader>
 
-              <CardContent>
-                <p>Content...</p>
-              </CardContent>
+                <CardContent>
+                  {organizer.emails?.map((email) => (
+                    <p key={email}>{email}</p>
+                  ))}
 
-              <CardFooter>
-                <Button variant="secondary">Voir</Button>
-              </CardFooter>
-            </Card>
+                  {organizer.phones?.map((phone) => (
+                    <p key={phone}>{phone}</p>
+                  ))}
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       )}
@@ -71,14 +81,33 @@ export default function OrganizersList({ organizers }: OrganizersListProps) {
             <TableRow>
               <TableHead>Nom</TableHead>
               <TableHead>Type</TableHead>
+              <TableHead>Emails</TableHead>
+              <TableHead>Téléphones</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {organizers.map((organizer) => (
               <TableRow key={organizer.id}>
-                <TableCell>{organizer.name}</TableCell>
-                <TableCell>-</TableCell>
+                <TableCell>
+                  <Link
+                    key={organizer.id}
+                    href={`/contacts/organizers/${organizer.id}`}
+                  >
+                    {organizer.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{TranslatedOrganizerType[organizer.type]}</TableCell>
+                <TableCell>
+                  {organizer.emails?.map((email) => (
+                    <p key={email}>{email}</p>
+                  ))}
+                </TableCell>
+                <TableCell>
+                  {organizer.phones?.map((phone) => (
+                    <p key={phone}>{phone}</p>
+                  ))}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
